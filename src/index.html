@@ -4,10 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <body>
-    <div class="content">
-        
+    <dialog>
+        <form class="todo-form">
+            <header>
+                <h2>New Todo</h2>
+                <button class="close-dialog-btn" value="cancel" formmethod="dialog">&times;</button>
+            </header>
+            <ul class="todo-form-container">
+                <li>
+                    <label for="title"></label>
+                    <input type="text" id="title" placeholder="Title"  value="Study WebDev" required>
+                </li>
+                <li>
+                    <label for="desc"></label>
+                    <input type="text" id="desc" placeholder="Description" value="Study Modules">
+                </li>
+                <li>
+                    <label for="due-date">Due Date: </label>
+                    <input type="date" id="due-date"  value="" required>
+                </li>
+                <li>
+                    <label for="priority">priority</label>
+                    <input type="text" id="priority" value="HP">
+                </li>
+            </ul>
+            <button class="confirm-dialog-btn" value="default">Add Todo</button>
+        </form>
+    </dialog>
+    <div class="container">
+        <header>
+            <div class="header-title">
+                <h1>Taskify</h1>
+                <p>Your Todo List</p>
+            </div>
+        </header>
+        <aside class="sidebar">
+            <div class="sidebar-title">
+                <h2>Projects</h2>
+            </div>
+            <div class="projects">
+                <div class="project default-project">
+                    <button class="default-project-btn">default</button>
+                    <button class="create-todo-btn">+</button>
+                </div>
+            </div>
+        </aside>
+        <section class="main-content">
+
+        </section>
     </div>
 </body>
 </html>
