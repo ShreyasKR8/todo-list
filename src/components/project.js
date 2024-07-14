@@ -9,10 +9,6 @@ class Project {
         this.todos.push(todo);
         
     }
-
-    displayTodo() {
-        console.log(this.todos);
-    }
 }
 
 export default Project;
