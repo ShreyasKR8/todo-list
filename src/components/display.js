@@ -11,7 +11,7 @@ function addEventListenersForBtn(btnEle) {
     })
 }
 
-function displayNewProject(projectName) {
+function addDefaultProject(projectName) {
     mainContentDiv.replaceChildren();
     const projectDiv = document.createElement("div");
     projectDiv.className = "project";
@@ -33,6 +33,40 @@ function displayNewProject(projectName) {
 
     projectDiv.appendChild(projectBtn);
     projectDiv.appendChild(createTodoBtn);
+}
+
+function addNewProject(projectName) {
+    mainContentDiv.replaceChildren();
+    const projectDiv = document.createElement("div");
+    projectDiv.className = "project";
+    projectsDiv.appendChild(projectDiv);
+
+    const projectBtn = document.createElement("button");
+    projectBtn.className = "project-btn";
+    projectBtn.innerText = projectName;
+    projectBtn.addEventListener("click", () => {
+        let loadedProject = storage.loadProjectFromLocalStorage(projectName);
+        state.setCurrentProject(loadedProject);
+        displayProject(loadedProject);
+    });
+
+    const createTodoBtn = document.createElement("button");
+    createTodoBtn.className = "create-todo-btn";
+    createTodoBtn.innerText = "+";
+    addEventListenersForBtn(createTodoBtn);
+
+    const deleteProjectBtn = document.createElement("button");
+    deleteProjectBtn.className = "delete-project-btn";
+    deleteProjectBtn.innerText = "X";
+    deleteProjectBtn.addEventListener("click", () => {
+        projectsDiv.removeChild(projectDiv);
+        mainContentDiv.replaceChildren();
+        storage.deleteProjectFromLocalStorage(projectName);
+    });
+
+    projectDiv.appendChild(projectBtn);
+    projectDiv.appendChild(createTodoBtn);
+    projectDiv.appendChild(deleteProjectBtn);
 
 }
 
@@ -73,7 +107,8 @@ function displayTodos(todos) {
 }
 
 export default {
+    addDefaultProject,
+    addNewProject,
     displayProject,
     displayTodos,
-    displayNewProject,
 };

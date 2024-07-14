@@ -14,17 +14,45 @@ const closeDialogBtn = document.querySelector(".close-dialog-btn");
 const todoForm = document.querySelector(".todo-form");
 const newProjectBtn = document.querySelector(".new-project-btn");
 
-const defaultProject = new Project("default project");
-// const todoItem1 = new Todo("Go Running", "hyhyhyy", "23/12", "HP");
-// defaultProject.addTodo(todoItem1);
-// storage.saveProjectToLocalStorage(defaultProject);
-// state.setCurrentProject(defaultProject);
-// display.displayProject(defaultProject);
+
+loadProjects();
+
+function loadProjects() {
+    //retrieve projects from localStorage, if any
+    const projectNames = storage.getAllProjectNames();
+    if(projectNames.length == 0) {
+        //if empty, we are loading for the first time
+        createDefaultProject();
+        return;
+    }
+
+    //add retreived projects to sidebar
+    projectNum = projectNames.length;
+    display.addDefaultProject(projectNames[0]);
+    projectNames.slice(1).forEach(projectName => {
+        display.addNewProject(projectName);
+    });
+
+    //display default project's todos.
+    const defaultProject = storage.loadProjectFromLocalStorage(projectNames[0]);
+    state.setCurrentProject(defaultProject);
+    display.displayProject(defaultProject);
+}
+
+function createDefaultProject() {
+    const defaultProject = new Project("default project");
+    const todoItem1 = new Todo("Go Running", "hyhyhyy", "23/12", "HP");
+    defaultProject.addTodo(todoItem1);
+    display.addDefaultProject(defaultProject.name);
+    storage.saveProjectToLocalStorage(defaultProject);
+    state.setCurrentProject(defaultProject);
+    display.displayProject(defaultProject);
+}
 
 function createProject() {
     const projectName = `new project ${projectNum++}`;
     const newProject = new Project(projectName);
-    display.displayNewProject(newProject.name);
+    display.addNewProject(newProject.name);
     state.setCurrentProject(newProject);
     storage.saveProjectToLocalStorage(newProject);
 }
@@ -34,10 +62,6 @@ function createTodo(title, desc, dueDate, priority) {
     state.getCurrentProject().addTodo(todoItem);
     storage.saveProjectToLocalStorage(state.getCurrentProject());
 }
-
-createTodoBtn.addEventListener("click", () => {
-    dialog.showModal();
-});
 
 confirmDialogBtn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -59,10 +83,3 @@ closeDialogBtn.addEventListener("click", () => {
 })
 
 newProjectBtn.addEventListener("click", createProject);
-
-defaultProjectBtn.addEventListener("click", () => {
-    let loadedProject = storage.loadProjectFromLocalStorage("default project");
-    state.setCurrentProject(loadedProject);
-    display.displayProject(state.getCurrentProject());
-    // console.log
-});
