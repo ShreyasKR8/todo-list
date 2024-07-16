@@ -4,10 +4,11 @@ import Todo from "./components/todo";
 import display from './components/display';
 import storage from './components/storage'
 import state from './components/state'
+import { format } from 'date-fns'
 
 let projectNum = 1;
-const defaultProjectBtn = document.querySelector(".project-btn");
-const createTodoBtn = document.querySelector(".create-todo-btn");
+// const defaultProjectBtn = document.querySelector(".project-btn");
+// const createTodoBtn = document.querySelector(".create-todo-btn");
 const dialog = document.querySelector("dialog");
 const confirmDialogBtn = document.querySelector(".confirm-dialog-btn");
 const closeDialogBtn = document.querySelector(".close-dialog-btn");
@@ -68,8 +69,9 @@ confirmDialogBtn.addEventListener("click", (event) => {
     
     const title = document.getElementById("title").value;
     const desc = document.getElementById("desc").value;
-    // const dueDate = document.getElementById("due-date").value;
-    const dueDate = "26/11";
+    const dueDateInput = document.getElementById("due-date").value;
+    const dueDate = format(new Date(dueDateInput), 'dd/mm/yyyy');
+    // const dueDate = "26/11";
     const priority = document.getElementById("priority").value;
     createTodo(title, desc, dueDate, priority);
     display.displayTodos(state.getCurrentProject().todos);
@@ -83,3 +85,10 @@ closeDialogBtn.addEventListener("click", () => {
 })
 
 newProjectBtn.addEventListener("click", createProject);
+
+document.addEventListener("deleteTodo", (event) => {
+    const todoToDelete = event.detail;
+    state.getCurrentProject().deleteTodo(todoToDelete);
+    const currentProject = state.getCurrentProject();
+    storage.saveProjectToLocalStorage(currentProject);
+})

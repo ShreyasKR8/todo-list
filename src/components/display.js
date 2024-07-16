@@ -79,7 +79,7 @@ function displayTodos(todos) {
     let cardIndex = 0;
     todos.forEach(todo => {
         const todoCard = document.createElement("article");
-        todoCard.className = `todo-card-${cardIndex++}`;
+        todoCard.className = `todo-card todo-card-${cardIndex++}`;
         mainContentDiv.appendChild(todoCard);
 
         const todoTitle = document.createElement("h3");
@@ -98,12 +98,30 @@ function displayTodos(todos) {
         todoPriority.className = "priority";
         todoPriority.innerText = todo.priority;
 
+        const deleteTodoBtn = document.createElement("button");
+        deleteTodoBtn.className = "delete-todo-btn";
+        deleteTodoBtn.innerText = "del";
+        deleteTodoBtn.addEventListener("click", () => {
+            deleteTodo(todoCard, todo);
+        })
+
         todoCard.appendChild(todoTitle);
         todoCard.appendChild(todoDesc);
         todoCard.appendChild(todoDueDate);
         todoCard.appendChild(todoPriority);
+        todoCard.appendChild(deleteTodoBtn);
         
     });
+}
+
+function deleteTodo(todoCard, todo) {
+    mainContentDiv.removeChild(todoCard);
+    sendDeleteTodoMessage(todo);
+}
+
+function sendDeleteTodoMessage(todo) {
+    const eventDeleteTodo = new CustomEvent("deleteTodo", {detail: todo});
+    document.dispatchEvent(eventDeleteTodo);
 }
 
 export default {

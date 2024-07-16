@@ -79,7 +79,15 @@ dialog {
     /* overflow-y: auto; */
 }
 
+.todo-card {
 
+    height: 150px;
+    box-shadow: -2px 2px 2px rgb(198, 197, 197),
+    2px -2px 2px rgb(198, 197, 197);
+    border-radius: 10px;
+    margin: 20px;
+    padding: 30px 30px;
+}
 
 
 
