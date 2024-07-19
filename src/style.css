@@ -12,21 +12,20 @@
     "sidebar header"
     "sidebar main-content";
     height: 100vh;
-    row-gap: 5px;
 }
 
 
 header {
-    box-shadow: 0px 3px 5px rgb(179, 174, 174);
     grid-area: header;
     background: #a9c52f;
-    color: #f5f5f5;
+    color: black;
+    border-left: 3px solid white;
 }
 
 .header-title {
     width: fit-content;
     margin: 0px auto;
-    padding: 40px 0 60px;
+    padding: 30px 0 40px;
 }
 
 .sidebar {
@@ -45,23 +44,69 @@ header {
     margin: 50px auto;
 }
 
+.projects {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .projects button {
     border: none;
     border-radius: 3px;
     padding: 7px 10px;
 }
 
-.new-project-btn {
+.projects .delete-project-btn {
     border: none;
     border-radius: 3px;
-    width: 200px;
+    padding: 4px 5px;
+    margin-right: 10px;
+}
+
+.new-project-btn {
+    width: 150px;
     margin: 0 auto;
-    padding: 7px 10px;
+    height: 30px;
+    background-color: #f5f5f5;
+    border-radius: 2px;
+    border: 2px solid rgba(106, 85, 85, 0);
+}
+
+.new-project-btn:hover {
+    border-color: white;
 }
 
 .project {
     display: flex;
-    justify-content: space-around;
+    border: 4px solid rgba(179, 174, 174, 0);
+    height: 40px;
+}
+
+.project:hover {
+    cursor: pointer;
+}
+
+.highlight-project {
+    border-left-color: white;
+    border-right-color: white;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.project-name {
+    flex-grow: 1;
+    border: none;
+    border-radius: 3px;
+    background-color: rgba(179, 174, 174, 0);
+    margin-left: 40px;
+    padding: 7px 10px;
+}
+
+.create-todo-btn-default {
+    margin-right: 50px;
+}
+
+.create-todo-btn {
+    margin-right: 15px;
 }
 
 dialog {
@@ -72,24 +117,53 @@ dialog {
 }
 
 .main-content {
+    background-color: #2c5d63;
+    background-color:#283739;
+    color: white;
     grid-area: main-content;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
     padding: 30px;
-    /* overflow-y: auto; */
+    border-left: 3px solid white; 
+    border-top: 3px solid white;
+    overflow-y: auto; /* adds a scrollbar if content overflows */
 }
 
 .todo-card {
-
-    height: 150px;
-    box-shadow: -2px 2px 2px rgb(198, 197, 197),
-    2px -2px 2px rgb(198, 197, 197);
-    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    border-radius: 5px;
+    border: 2px solid rgba(106, 85, 85, 0);
     margin: 20px;
-    padding: 30px 30px;
+    padding: 10px 10px;
 }
 
+.todo-card:hover {
+    border-color: white;
+}
 
+.todo-card .title {
+    width: 150px;
+}
+
+.todo-card .desc {
+    width: 100px;
+    overflow-x: hidden;
+}
+
+.edit-todo-btn {
+    height: 28px;
+    border: none;
+    border-radius: 3px;
+    padding: 4px 5px;
+}
+
+.delete-todo-btn {
+    height: 30px;
+    border: none;
+    border-radius: 3px;
+    padding: 4px 5px;
+}
 
 /* .first-color { 
 	background: #283739; 
