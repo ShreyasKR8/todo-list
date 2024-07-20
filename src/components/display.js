@@ -1,7 +1,7 @@
 import storage from "./storage";
 import state from "./state";
 
-const mainContentDiv = document.querySelector(".main-content");
+const todosContentDiv = document.querySelector(".todos-content");
 const projectsDiv = document.querySelector(".projects");
 let selectedProjectDiv = null;
 const dialog = document.querySelector("dialog");
@@ -19,7 +19,7 @@ function addEventListenersForBtn(btnEle) {
 }
 
 function addDefaultProject(projectName) {
-    mainContentDiv.replaceChildren();
+    todosContentDiv.replaceChildren();
     const projectDiv = document.createElement("div");
     projectDiv.className = "project default-project";
     projectsDiv.appendChild(projectDiv);
@@ -49,7 +49,7 @@ function addDefaultProject(projectName) {
 }
 
 function addNewProject(projectName) {
-    mainContentDiv.replaceChildren();
+    todosContentDiv.replaceChildren();
     const projectDiv = document.createElement("div");
     projectDiv.className = "project";
     projectsDiv.appendChild(projectDiv);
@@ -78,7 +78,7 @@ function addNewProject(projectName) {
     deleteProjectBtn.innerHTML = DELETE_ICON_SVG;
     deleteProjectBtn.addEventListener("click", () => {
         projectsDiv.removeChild(projectDiv);
-        mainContentDiv.replaceChildren();
+        todosContentDiv.replaceChildren();
         storage.deleteProjectFromLocalStorage(projectName);
     });
 
@@ -93,25 +93,24 @@ function displayProject(project) {
 }
 
 function displayTodos(todos) {
-    mainContentDiv.replaceChildren();
+    todosContentDiv.replaceChildren();
     let cardIndex = 0;
     todos.forEach(todo => {
         const todoCard = document.createElement("article");
         todoCard.className = `todo-card todo-card-${cardIndex++}`;
-        mainContentDiv.appendChild(todoCard);
-
+        
         const todoTitle = document.createElement("h3");
         todoTitle.className = "title";
         todoTitle.innerText = todo.title;
-
+        
         const todoDesc = document.createElement("p");
         todoDesc.className = "desc";
         todoDesc.innerText = todo.description;
-
+        
         const todoDueDate = document.createElement("p");
         todoDueDate.className = "due-date";
         todoDueDate.innerText = todo.dueDate;
-
+        
         const todoPriority = document.createElement("p");
         todoPriority.className = "priority";
         todoPriority.innerText = todo.priority;
@@ -122,14 +121,14 @@ function displayTodos(todos) {
         editTodoBtn.addEventListener("click", () => {
             // bring up the dialog filled with current todo card info.
         })
-
+        
         const deleteTodoBtn = document.createElement("button");
         deleteTodoBtn.className = "delete-todo-btn";
         deleteTodoBtn.innerHTML = DELETE_ICON_SVG;
         deleteTodoBtn.addEventListener("click", () => {
             deleteTodo(todoCard, todo);
         })
-
+        
         todoCard.appendChild(todoTitle);
         todoCard.appendChild(todoDesc);
         todoCard.appendChild(todoDueDate);
@@ -137,17 +136,25 @@ function displayTodos(todos) {
         todoCard.appendChild(editTodoBtn);
         todoCard.appendChild(deleteTodoBtn);
         
+        todosContentDiv.appendChild(todoCard);
+        addTodoSeparator();
     });
 }
 
 function deleteTodo(todoCard, todo) {
-    mainContentDiv.removeChild(todoCard);
+    todosContentDiv.removeChild(todoCard);
     sendDeleteTodoMessage(todo);
 }
 
 function sendDeleteTodoMessage(todo) {
     const eventDeleteTodo = new CustomEvent("deleteTodo", {detail: todo});
     document.dispatchEvent(eventDeleteTodo);
+}
+
+function addTodoSeparator() {
+    const borderAfterTodoCard = document.createElement("p");
+    borderAfterTodoCard.style.borderBottom = "1px solid rgb(153, 153, 153)";
+    todosContentDiv.appendChild(borderAfterTodoCard);
 }
 
 export default {
