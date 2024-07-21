@@ -19,10 +19,8 @@ function loadProjectFromLocalStorage(projectName) {
             todoData.dueDate, 
             todoData.priority
         );
-
-        if(todoData.isCompleted) {
-            todo.markAsCompleted();
-        }
+        todo.setStatus(todoData.isCompleted)
+        
         project.addTodo(todo);
     });
     return project;

@@ -18,6 +18,10 @@ class Project {
         this.todos.splice(todoIndex, 1);
         return true;
     }
+
+    getAllTodos() {
+        return this.todos;
+    }
 }
 
 export default Project;

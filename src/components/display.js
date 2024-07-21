@@ -100,6 +100,14 @@ function displayTodos(todos) {
         const todoCard = document.createElement("article");
         todoCard.className = `todo-card todo-card-${cardIndex++}`;
         
+        const todoCheckbox = document.createElement("input");
+        todoCheckbox.setAttribute("type", "checkbox");
+        todoCheckbox.className = "todo-checkbox";
+        todoCheckbox.checked = todo.isCompleted;
+        todoCheckbox.addEventListener("change", () => {
+            handleTodoCheckboxChange(todo, todoCard, todoCheckbox.checked);
+        })
+
         const todoTitle = document.createElement("h3");
         todoTitle.className = "title";
         todoTitle.innerText = todo.title;
@@ -137,13 +145,14 @@ function displayTodos(todos) {
             deleteTodo(todoCard, todo);
         })
         
+        todoCard.appendChild(todoCheckbox);
         todoCard.appendChild(todoTitle);
         todoCard.appendChild(todoDesc);
         todoCard.appendChild(todoDueDate);
         todoCard.appendChild(todoPriority);
         todoCard.appendChild(editTodoBtn);
         todoCard.appendChild(deleteTodoBtn);
-        
+        setTodoStyles(todoCard, todo.isCompleted);
         todosContentDiv.appendChild(todoCard);
         addTodoSeparator();
     });
@@ -157,6 +166,31 @@ function deleteTodo(todoCard, todo) {
 function sendDeleteTodoMessage(todo) {
     const eventDeleteTodo = new CustomEvent("deleteTodo", {detail: todo});
     document.dispatchEvent(eventDeleteTodo);
+}
+
+function handleTodoCheckboxChange(todoToUpdate, todoCard, isTodoChecked) {
+    //changes for dom elements
+    setTodoStyles(todoCard, isTodoChecked);
+    sendCheckboxClicked(todoToUpdate, isTodoChecked);
+}
+
+function setTodoStyles(todoCard, isTodoChecked) {
+    const todoChildren = todoCard.children;
+    const childrenArray = Array.from(todoChildren);
+    childrenArray.forEach(childEle => {
+        if(isTodoChecked) {
+            childEle.style.color = "grey";
+        }
+        else {
+            let contentColor = getComputedStyle(document.documentElement).getPropertyValue('--todo-content-color');
+            childEle.style.color = contentColor;
+        }
+    })
+}
+
+function sendCheckboxClicked(todoToUpdate, isTodoChecked) {
+    const eventChangeCheckbox = new CustomEvent("checkboxChanged", {detail: {todoToUpdate, isTodoChecked}});
+    document.dispatchEvent(eventChangeCheckbox);
 }
 
 function addTodoSeparator() {

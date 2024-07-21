@@ -7,14 +7,11 @@ import state from './components/state'
 import { format } from 'date-fns'
 
 let projectNum = 1;
-// const defaultProjectBtn = document.querySelector(".project-btn");
-// const createTodoBtn = document.querySelector(".create-todo-btn");
 const dialog = document.querySelector("dialog");
 const confirmDialogBtn = document.querySelector(".confirm-dialog-btn");
 const closeDialogBtn = document.querySelector(".close-dialog-btn");
 const todoForm = document.querySelector(".todo-form");
 const newProjectBtn = document.querySelector(".new-project-btn");
-
 
 loadProjects();
 
@@ -42,6 +39,7 @@ function loadProjects() {
 
 function createDefaultProject() {
     const defaultProject = new Project("default project");
+    //Correct the date please.
     const todoItem1 = new Todo("Go Running", "hyhyhyy", "23/12", "HP");
     defaultProject.addTodo(todoItem1);
     display.addDefaultProject(defaultProject.name);
@@ -67,14 +65,14 @@ function createTodo(title, desc, dueDate, priority) {
 confirmDialogBtn.addEventListener("click", (event) => {
     event.preventDefault();
     
+    //maybe move this code to display?
     const title = document.getElementById("title").value;
     const desc = document.getElementById("desc").value;
     const dueDateInput = document.getElementById("due-date").value;
     const dueDate = format(new Date(dueDateInput), 'dd/mm/yyyy');
-    // const dueDate = "26/11";
     const priority = document.getElementById("priority").value;
     createTodo(title, desc, dueDate, priority);
-    display.displayTodos(state.getCurrentProject().todos);
+    display.displayTodos(state.getCurrentProject().getAllTodos());
 
     todoForm.reset();
     dialog.close();
@@ -91,4 +89,10 @@ document.addEventListener("deleteTodo", (event) => {
     state.getCurrentProject().deleteTodo(todoToDelete);
     const currentProject = state.getCurrentProject();
     storage.saveProjectToLocalStorage(currentProject);
-})
+});
+
+document.addEventListener("checkboxChanged", (event) => {
+    const {todoToUpdate, isTodoChecked} = event.detail;
+    todoToUpdate.setStatus(isTodoChecked);
+    storage.saveProjectToLocalStorage(state.getCurrentProject());
+});

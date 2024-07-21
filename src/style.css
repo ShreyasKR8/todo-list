@@ -1,3 +1,7 @@
+:root {
+    --todo-content-color: white;
+}
+
 * {
     padding: 0;
     margin: 0;
@@ -132,46 +136,53 @@ dialog {
     position: sticky;
     top: 0;
     display: flex;
-    gap: 150px;
     background-color: #1b484e;
     color: rgb(153, 153, 153);
 }
 
 .todo-column-names .col-title {
-    padding-left: 30px;
-    padding-right: 95px;
+    margin-left: 95px;
 }
 
-.todo-column-names .col-desc,
+.todo-column-names .col-desc {
+    margin-left: 240px;
+}
+
 .todo-column-names .col-due-date {
-    padding-left: 30px;
+    margin-left: 290px;
 }
 
 .todo-column-names .col-priority {
-    padding-left: 10px;
+    margin-left: 70px;
+
 }
 
 .todos-content {
-    color: white;
+    color: var(--todo-content-color);
     padding: 20px 30px;
 }
 
 .todo-card {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     height: 80px;
+    gap: 20px;
     border-radius: 5px;
     border: 2px solid rgba(106, 85, 85, 0);
     position: relative;
 }
 
+.todo-card .todo-checkbox {
+    margin-left: 20px;
+}
+
 .todo-card .title {
-    width: 150px;
+    width: 250px;
+    margin-left: 10px;
 }
 
 .todo-card .desc {
-    width: 100px;
+    width: 300px;
     overflow-x: hidden;
 }
 
@@ -186,11 +197,22 @@ dialog {
     padding: 20px;
 }
 
+.todo-card .due-date {
+    width: 80px;
+    margin-left: 40px;
+}
+
+.todo-card .priority {
+    width: 50px;
+    margin-left: 50px;
+}
+
 .edit-todo-btn {
     height: 28px;
     border: none;
     border-radius: 3px;
     padding: 4px 5px;
+    margin-left: 20px;
 }
 
 .delete-todo-btn {
@@ -198,4 +220,5 @@ dialog {
     border: none;
     border-radius: 3px;
     padding: 4px 5px;
+    margin-left: 20px;
 }

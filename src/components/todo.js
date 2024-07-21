@@ -7,8 +7,8 @@ class Todo {
         this.isCompleted = false;
     }
 
-    markAsCompleted() {
-        this.isCompleted = true;
+    setStatus(isDone) {
+        this.isCompleted = isDone;
     }
 }
 
