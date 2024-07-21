@@ -153,7 +153,7 @@ dialog {
 }
 
 .todo-column-names .col-priority {
-    margin-left: 70px;
+    margin-left: 80px;
 
 }
 
@@ -221,4 +221,35 @@ dialog {
     border-radius: 3px;
     padding: 4px 5px;
     margin-left: 20px;
+}
+
+input[type="checkbox"] {
+    appearance: none;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    font-size: 14px;
+    border: 0.12em solid var(--todo-content-color);
+    border-radius: 0.3em;
+}
+
+input[type="checkbox"]::after {
+    position: absolute;
+    left: 3px;
+    top: 2px;
+    width: 12px;
+    height: 12px;
+    content: "";
+    box-shadow: inset 1em 1em rgb(19, 159, 19);
+    transform: scale(0);
+    transition: 100ms transform ease-in-out;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);  
+}
+
+input[type="checkbox"]:checked {
+    border: 0.12em solid rgb(19, 159, 19);
+}
+
+input[type="checkbox"]:checked::after {
+    transform: scale(1);
 }
