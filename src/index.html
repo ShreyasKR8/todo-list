@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
 </head>
 <body>
     <dialog>
@@ -28,7 +27,11 @@
                 </li>
                 <li>
                     <label for="priority">priority</label>
-                    <input type="text" id="priority" value="HP">
+                    <select id="priority">
+                        <option value="High">High</option>
+                        <option value="Normal" selected>Normal</option>
+                        <option value="Low">Low</option>
+                    </select>
                 </li>
             </ul>
             <button class="confirm-dialog-btn" value="default">Add Todo</button>
