@@ -6,13 +6,13 @@
     <title>Todo List</title>
 </head>
 <body>
-    <dialog>
-        <form class="todo-form">
+    <dialog class="create-todo-dialog">
+        <form class="create-todo-form">
             <header>
                 <h2>New Todo</h2>
                 <button class="close-dialog-btn" value="cancel" formmethod="dialog">&times;</button>
             </header>
-            <ul class="todo-form-container">
+            <ul class="todo-form-list">
                 <li>
                     <label for="title"></label>
                     <input type="text" id="title" placeholder="Title"  value="Study WebDev" required>
@@ -23,7 +23,7 @@
                 </li>
                 <li>
                     <label for="due-date">Due Date: </label>
-                    <input type="date" id="due-date" required>
+                    <input type="date" id="due-date">
                 </li>
                 <li>
                     <label for="priority">priority</label>
@@ -35,6 +35,37 @@
                 </li>
             </ul>
             <button class="confirm-dialog-btn" value="default">Add Todo</button>
+        </form>
+    </dialog>
+    <dialog class="edit-todo-dialog">
+        <form class="edit-todo-form">
+            <header>
+                <h2>Edit Todo</h2>
+                <button class="close-edit-dialog-btn" value="cancel" formmethod="dialog">&times;</button>
+            </header>
+            <ul class="todo-form-list">
+                <li>
+                    <label for="edit-title"></label>
+                    <input type="text" id="edit-title" placeholder="Title" required>
+                </li>
+                <li>
+                    <label for="edit-desc"></label>
+                    <input type="text" id="edit-desc" placeholder="Description">
+                </li>
+                <li>
+                    <label for="edit-due-date">Due Date: </label>
+                    <input type="date" id="edit-due-date">
+                </li>
+                <li>
+                    <label for="edit-priority">priority</label>
+                    <select id="edit-priority">
+                        <option value="High">High</option>
+                        <option value="Normal" selected>Normal</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </li>
+            </ul>
+            <button class="confirm-changes-btn" value="default">Confirm Changes</button>
         </form>
     </dialog>
     <div class="container">

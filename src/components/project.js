@@ -10,13 +10,21 @@ class Project {
         
     }
 
-    deleteTodo(todo) {
-        const todoIndex = this.todos.indexOf(todo);
+    deleteTodo(todoToDelete) {
+        const todoIndex = this.todos.indexOf(todoToDelete);
         if(todoIndex == -1) {
             return false;
         }
         this.todos.splice(todoIndex, 1);
         return true;
+    }
+
+    getTodo(todoToFind) {
+        const todoIndex = this.todos.indexOf(todoToFind);
+        if(todoIndex == -1) {
+            return null;
+        }
+        return this.todos[todoIndex];
     }
 
     getAllTodos() {
