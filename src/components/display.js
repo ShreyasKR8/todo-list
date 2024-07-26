@@ -166,6 +166,8 @@ function displayTodos(todos) {
 }
 
 function deleteTodo(todoCard, todo) {
+    const separatorLine = todoCard.nextSibling;
+    todosContentDiv.removeChild(separatorLine);
     todosContentDiv.removeChild(todoCard);
     sendDeleteTodoMessage(todo);
 }
@@ -242,7 +244,6 @@ function fillEditForm(todo) {
     const month = todo.dueDate.slice(3, 5);
     const year = todo.dueDate.slice(6, 10);
     const dateString = year + "-" + month + "-" + day;
-    console.log(dateString)
     document.getElementById("edit-due-date").valueAsDate = new Date(dateString);
     
     const priorityInput = document.getElementById("edit-priority");
