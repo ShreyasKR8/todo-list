@@ -183,17 +183,22 @@ dialog {
 
 .todo-card .desc {
     width: 300px;
-    overflow-x: hidden;
+    max-height: 58px; 
+    overflow: hidden;
+    /* gets hidden after max-height reached, specific because 
+    `align-items:center' makes setting height difficult as it 
+    removes the centering effect when custom height is set */
 }
 
 .todo-card .display-desc {
-    width: 150px;
-    height: fit-content;
+    width: 500px;
+    height: 200px;
     background-color: white;
     border-radius: 4px;
     color: black;
-    position: absolute;
-    left: 410px;
+    position: fixed;
+    z-index: 1;
+    left: 960px;
     padding: 20px;
 }
 
