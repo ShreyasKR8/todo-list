@@ -58,6 +58,11 @@ header {
     gap: 20px;
 }
 
+.project-name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
 .projects button {
     border: none;
     border-radius: 3px;

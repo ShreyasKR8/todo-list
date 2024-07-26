@@ -6,7 +6,6 @@ import storage from './components/storage'
 import state from './components/state'
 import { format, isPast } from 'date-fns'
 
-let projectNum = 1;
 const createTodoDialog = document.querySelector(".create-todo-dialog");
 const createTodoForm = document.querySelector(".create-todo-form");
 const confirmDialogBtn = document.querySelector(".confirm-dialog-btn");
@@ -18,6 +17,10 @@ const editTodoForm = document.querySelector(".edit-todo-form");
 const closeEditsDialogBtn = document.querySelector(".close-edit-dialog-btn");
 
 const newProjectBtn = document.querySelector(".new-project-btn");
+const createProjectDialog = document.querySelector(".create-project-dialog");
+const createProjectForm = document.querySelector(".create-project-form");
+const confirmProjectDialogBtn = document.querySelector(".create-project-dialog-btn");
+const closeProjectDialogBtn = document.querySelector(".close-project-dialog-btn");
 
 loadProjects();
 
@@ -31,7 +34,6 @@ function loadProjects() {
     }
 
     //add retreived projects to sidebar
-    projectNum = projectNames.length;
     display.addDefaultProject(projectNames[0]);
     projectNames.slice(1).forEach(projectName => {
         display.addNewProject(projectName);
@@ -54,8 +56,10 @@ function createDefaultProject() {
     display.displayProject(defaultProject);
 }
 
-function createProject() {
-    const projectName = `new project ${projectNum++}`;
+function createProject(projectName) {
+    if(projectName == "") {
+        return;
+    }
     const newProject = new Project(projectName);
     display.addNewProject(newProject.name);
     state.setCurrentProject(newProject);
@@ -149,7 +153,32 @@ closeEditsDialogBtn.addEventListener("click", () => {
     editTodoDialog.close();
 });
 
-newProjectBtn.addEventListener("click", createProject);
+newProjectBtn.addEventListener("click", () => {
+    createProjectDialog.showModal();
+});
+
+closeProjectDialogBtn.addEventListener("click", () => {
+    createProjectForm.reset();
+    createProjectDialog.close();
+});
+
+confirmProjectDialogBtn.addEventListener("click", (event) => {
+    event.preventDefault();
+
+    const projectNameInput = document.getElementById("project-name");
+    
+    //check if valid
+    if(projectNameInput.value == "") {
+        projectNameInput.setCustomValidity("Please fill the project name");
+        projectNameInput.reportValidity();
+        return;
+    }
+
+    createProject(projectNameInput.value);
+
+    createProjectForm.reset();
+    createProjectDialog.close();
+})
 
 document.addEventListener("deleteTodo", (event) => {
     const todoToDelete = event.detail;

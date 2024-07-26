@@ -6,6 +6,21 @@
     <title>Todo List</title>
 </head>
 <body>
+    <dialog class="create-project-dialog">
+        <form class="create-project-form">
+            <header>
+                <h2>New Project</h2>
+                <button class="close-project-dialog-btn" value="cancel" formmethod="dialog">&times;</button>
+            </header>
+            <ul class="project-form-list">
+                <li>
+                    <label for="project-name"></label>
+                    <input type="text" id="project-name" placeholder="Project Name" required>
+                </li>
+            </ul>
+            <button class="create-project-dialog-btn" value="default">Create Project</button>
+        </form>
+    </dialog>
     <dialog class="create-todo-dialog">
         <form class="create-todo-form">
             <header>
