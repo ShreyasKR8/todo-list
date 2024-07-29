@@ -23,11 +23,11 @@ This Todo List web application is a tool designed to help users organize their t
 ## Setup Instructions
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/todo-list-web-app.git
+   git clone https://github.com/ShreyasKR8/todo-list.git
    ```
 2. Navigate to the project directory:
    ```bash
-   cd todo-list-web-app
+   cd todo-list-main
    ```
 3. Install dependencies:
    ```bash
