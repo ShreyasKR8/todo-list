@@ -5,6 +5,10 @@ class Project {
         this.todos = [];
     }
 
+    updateProject(projectNewName) {
+        this.name = projectNewName;
+    }
+
     addTodo(todo) {
         this.todos.push(todo);
         

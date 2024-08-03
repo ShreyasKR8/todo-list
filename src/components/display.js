@@ -4,53 +4,63 @@ import state from "./state";
 const todosContentDiv = document.querySelector(".todos-content");
 const projectsDiv = document.querySelector(".projects");
 const confirmEditsBtn = document.querySelector(".confirm-changes-btn");
+const editTodoDialog = document.querySelector(".edit-todo-dialog");
+const editProjectDialog = document.querySelector(".edit-project-dialog");
 let selectedProjectDiv = null;
 let currentDescDisplayed = null;
 let checkboxNum = 1;
+let projectDivList = [];
 let todoToEdit = [];
-const createTodoDialog = document.querySelector(".create-todo-dialog");
-const editTodoDialog = document.querySelector(".edit-todo-dialog");
-const DELETE_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0 0 24 24">
-    <path d="M 10 2 L 9 3 L 5 3 C 4.448 3 4 3.448 4 4 C 4 4.552 4.448 5 5 5 L 7 5 L 17 5 L 19 5 C 19.552 5 20 4.552 20 4 C 20 3.448 19.552 3 19 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.105 5.895 22 7 22 L 17 22 C 18.105 22 19 21.105 19 20 L 19 7 L 5 7 z"></path>
-    </svg>`;
-const EDIT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="15" height="15" viewBox="0 0 24 24">
-    <path d="M 18.414062 2 C 18.158188 2 17.902031 2.0974687 17.707031 2.2929688 L 16 4 L 20 8 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.925594 2.0974687 18.669937 2 18.414062 2 z M 14.5 5.5 L 3 17 L 3 21 L 7 21 L 18.5 9.5 L 14.5 5.5 z"></path>
-    </svg>`;
+// const ADD_ICON_SVG = `<svg width="24" height="24" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+//     <title>Add Todo</title>
+//     <!-- Vertical Line of Plus -->
+//     <line x1="50" y1="20" x2="50" y2="80" stroke="white" stroke-width="8"/>
 
+//     <!-- Horizontal Line of Plus -->
+//     <line x1="20" y1="50" x2="80" y2="50" stroke="white" stroke-width="8"/>
+// </svg>`;
+const DELETE_TODO_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="19" height="22" viewBox="0 0 24 24">
+    <title>Delete Todo</title>
+    <path d="M 10 2 L 9 3 L 5 3 C 4.448 3 4 3.448 4 4 C 4 4.552 4.448 5 5 5 L 7 5 L 17 5 L 19 5 C 19.552 5 20 4.552 20 4 C 20 3.448 19.552 3 19 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.105 5.895 22 7 22 L 17 22 C 18.105 22 19 21.105 19 20 L 19 7 L 5 7 z" fill="white"></path>
+    </svg>`;
+const DELETE_PROJECT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="19" height="22" viewBox="0 0 24 24">
+    <title>Delete Project</title>
+    <path d="M 10 2 L 9 3 L 5 3 C 4.448 3 4 3.448 4 4 C 4 4.552 4.448 5 5 5 L 7 5 L 17 5 L 19 5 C 19.552 5 20 4.552 20 4 C 20 3.448 19.552 3 19 3 L 15 3 L 14 2 L 10 2 z M 5 7 L 5 20 C 5 21.105 5.895 22 7 22 L 17 22 C 18.105 22 19 21.105 19 20 L 19 7 L 5 7 z" fill="white"></path>
+    </svg>`;
+const EDIT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="20" height="20" viewBox="0 0 24 24">
+    <title>Edit Todo</title>
+    <path d="M 18.414062 2 C 18.158188 2 17.902031 2.0974687 17.707031 2.2929688 L 16 4 L 20 8 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.925594 2.0974687 18.669937 2 18.414062 2 z M 14.5 5.5 L 3 17 L 3 21 L 7 21 L 18.5 9.5 L 14.5 5.5 z" fill="white"></path>
+    </svg>`;
+    
 function addEventListenersForBtn(btnEle) {
     btnEle.addEventListener("click", () => {
-        createTodoDialog.showModal();
+        editProjectDialog.showModal();
     })
 }
 
 function addDefaultProject(projectName) {
     todosContentDiv.replaceChildren();
+    addProjectSeparator();
     const projectDiv = document.createElement("div");
     projectDiv.className = "project default-project";
     projectsDiv.appendChild(projectDiv);
     projectDiv.addEventListener("click", () => {
-        if(selectedProjectDiv) {
-            selectedProjectDiv.classList.remove("highlight-project")
-        }
-        projectDiv.classList.add("highlight-project");
-        selectedProjectDiv = projectDiv;
         let loadedProject = storage.loadProjectFromLocalStorage(projectName);
+        if(!loadedProject) {
+            return;
+        }
         state.setCurrentProject(loadedProject);
+        highlightProject(projectDiv);
         displayProject(loadedProject);
     });
-
 
     const projectNameEle = document.createElement("p");
     projectNameEle.className = "project-name";
     projectNameEle.innerText = projectName;
 
-    const createTodoBtn = document.createElement("button");
-    createTodoBtn.className = "create-todo-btn-default";
-    createTodoBtn.innerText = "+";
-    addEventListenersForBtn(createTodoBtn);
-
     projectDiv.appendChild(projectNameEle);
-    projectDiv.appendChild(createTodoBtn);
+    projectDivList.push(projectDiv);
+    addProjectSeparator();
 }
 
 function addNewProject(projectName) {
@@ -59,13 +69,12 @@ function addNewProject(projectName) {
     projectDiv.className = "project";
     projectsDiv.appendChild(projectDiv);
     projectDiv.addEventListener("click", () => {
-        if(selectedProjectDiv) {
-            selectedProjectDiv.classList.remove("highlight-project")
-        }
-        projectDiv.classList.add("highlight-project");
-        selectedProjectDiv = projectDiv;
         let loadedProject = storage.loadProjectFromLocalStorage(projectName);
+        if(!loadedProject) {
+            return;
+        }
         state.setCurrentProject(loadedProject);
+        highlightProject(projectDiv);
         displayProject(loadedProject);
     });
     
@@ -73,24 +82,44 @@ function addNewProject(projectName) {
     projectNameEle.className = "project-name";
     projectNameEle.innerText = projectName;
 
-    const createTodoBtn = document.createElement("button");
-    createTodoBtn.className = "create-todo-btn";
-    createTodoBtn.innerText = "+";
-    addEventListenersForBtn(createTodoBtn);
+    // const editProjectBtn = document.createElement("button");
+    // editProjectBtn.className = "edit-project-btn";
+    // editProjectBtn.innerHTML = EDIT_ICON_SVG;
+    // addEventListenersForBtn(editProjectBtn);
 
     const deleteProjectBtn = document.createElement("button");
     deleteProjectBtn.className = "delete-project-btn";
-    deleteProjectBtn.innerHTML = DELETE_ICON_SVG;
-    deleteProjectBtn.addEventListener("click", () => {
-        projectsDiv.removeChild(projectDiv);
-        todosContentDiv.replaceChildren();
-        storage.deleteProjectFromLocalStorage(projectName);
+    deleteProjectBtn.innerHTML = DELETE_PROJECT_ICON_SVG;
+    deleteProjectBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        deleteProject(projectDiv, projectName);
     });
 
     projectDiv.appendChild(projectNameEle);
-    projectDiv.appendChild(createTodoBtn);
+    // projectDiv.appendChild(editProjectBtn);
     projectDiv.appendChild(deleteProjectBtn);
 
+    projectDivList.push(projectDiv);
+
+    //default project is highlighted if it first time load of page
+    if(selectedProjectDiv) { 
+        highlightProject(projectDiv);
+    }
+
+    addProjectSeparator();
+}
+
+function highlightDefaultProject() {
+    selectedProjectDiv = document.querySelector(".default-project");
+    document.querySelector(".default-project").classList.add("highlight-project");
+}
+
+function highlightProject(projectDiv) {
+    if(selectedProjectDiv) {
+        selectedProjectDiv.classList.remove("highlight-project")
+    }
+    projectDiv.classList.add("highlight-project");
+    selectedProjectDiv = projectDiv;
 }
 
 function displayProject(project) {
@@ -147,7 +176,7 @@ function displayTodos(todos) {
         
         const deleteTodoBtn = document.createElement("button");
         deleteTodoBtn.className = "delete-todo-btn";
-        deleteTodoBtn.innerHTML = DELETE_ICON_SVG;
+        deleteTodoBtn.innerHTML = DELETE_TODO_ICON_SVG;
         deleteTodoBtn.addEventListener("click", () => {
             deleteTodo(todoCard, todo);
         })
@@ -162,7 +191,41 @@ function displayTodos(todos) {
         setTodoStyles(todoCard, todo.isCompleted);
         todosContentDiv.appendChild(todoCard);
         addTodoSeparator();
+        setPriorityTextColor(todoPriority);
     });
+}
+
+function setPriorityTextColor(domElement) { 
+    if(domElement.innerText == "High") {
+        
+        domElement.style.color = "rgb(211, 31, 31)";
+    }
+}
+
+function updateProjectDetails(projectNewName) {
+    const projectNameEle = selectedProjectDiv.children[0];
+    projectNameEle.innerText = projectNewName;
+}
+
+function deleteProject(projectDiv, projectName) {
+    const separatorLine = projectDiv.nextSibling;
+    projectsDiv.removeChild(separatorLine);
+
+    //remove project from sidebar.
+    projectsDiv.removeChild(projectDiv);
+    deleteProjectDivFromList(projectDiv);
+
+    storage.deleteProjectFromLocalStorage(projectName);
+    
+    //clear content and display default project content
+    todosContentDiv.replaceChildren();
+    sendProjectDeletedMessage();
+
+}
+
+function deleteProjectDivFromList(projectDiv) {
+    const index = projectDivList.indexOf(projectDiv);
+    projectDivList.splice(index, 1);
 }
 
 function deleteTodo(todoCard, todo) {
@@ -170,6 +233,11 @@ function deleteTodo(todoCard, todo) {
     todosContentDiv.removeChild(separatorLine);
     todosContentDiv.removeChild(todoCard);
     sendDeleteTodoMessage(todo);
+}
+
+function sendProjectDeletedMessage() {
+    const eventProjectDeleted = new Event("projectDeleted");
+    document.dispatchEvent(eventProjectDeleted);
 }
 
 function sendDeleteTodoMessage(todo) {
@@ -206,6 +274,12 @@ function addTodoSeparator() {
     const borderAfterTodoCard = document.createElement("p");
     borderAfterTodoCard.style.borderBottom = "1px solid rgb(153, 153, 153)";
     todosContentDiv.appendChild(borderAfterTodoCard);
+}
+
+function addProjectSeparator() {
+    const borderAfterProjectDiv = document.createElement("p");
+    borderAfterProjectDiv.style.borderBottom = "1px solid rgb(153, 153, 153)";
+    projectsDiv.appendChild(borderAfterProjectDiv);
 }
 
 function showTodoDescription(todoCard, todoDescription) {
@@ -268,4 +342,6 @@ export default {
     addNewProject,
     displayProject,
     displayTodos,
+    highlightDefaultProject,
+    updateProjectDetails,
 };

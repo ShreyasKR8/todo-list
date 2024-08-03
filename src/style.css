@@ -1,15 +1,31 @@
 :root {
-    --todo-content-color: white;
+    --todo-content-color: rgba(255, 255, 255, 0.853);
+    --select-wrapper-bg-color: #34495e;
+    --header-color: #f5f5f5;
+    --header-border-color: #f5f5f5;
+    --sidebar-color: #f5f5f5;
+    --sidebar-bg-color: #2c5d63;
+    --sidebar-btn-bg-color: #4ba37c;
+    --sidebar-btn-bg-hover-color: #17be73;
+    --sidebar-btn-border-color: black;
+    --highlight-project-bg-color: rgba(255, 255, 255, 0.1);
+    --dialog-form-color: #f5f5f5;
+    --input-color: #f5f5f5;
+    --input-bg-color: #2c5d63;
 }
+
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap');
 
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: "Mukta", sans-serif;
+    font-weight: 400;
 }
 
-button {
-   cursor: pointer; 
+body button {
+   cursor: pointer;
 }
 
 .container {
@@ -22,15 +38,14 @@ button {
     height: 100vh;
 }
 
-
-header {
+.container header {
     grid-area: header;
-    background: #a9c52f;
-    color: black;
-    border-left: 3px solid white;
+    background: #0b7f81;
+    color: var(--header-color);
+    border-left: 3px solid var(--header-border-color);
 }
 
-.header-title {
+.container .header-title {
     width: fit-content;
     margin: 0px auto;
     padding: 30px 0 40px;
@@ -42,9 +57,9 @@ header {
     flex-direction: column;
     gap: 20px;
     height: 100%;
-    background-color: #2c5d63;
+    background-color: var(--sidebar-bg-color);  
     justify-content:flex-start;
-    color: #f5f5f5;
+    color: var(--sidebar-color);
 }
 
 .sidebar-title {
@@ -52,41 +67,33 @@ header {
     margin: 50px auto;
 }
 
-.projects {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.sidebar-title h2 {
+    font-weight: 500;
 }
 
-.project-name {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.projects button {
-    border: none;
-    border-radius: 3px;
-    padding: 7px 10px;
-}
-
-.projects .delete-project-btn {
-    border: none;
-    border-radius: 3px;
-    padding: 4px 5px;
-    margin-right: 10px;
-}
-
-.new-project-btn {
+.new-project-btn, 
+.add-todo-btn {
     width: 150px;
     margin: 0 auto;
     height: 30px;
-    background-color: #f5f5f5;
+    background-color:var(--sidebar-btn-bg-color);
     border-radius: 2px;
-    border: 2px solid rgba(106, 85, 85, 0);
+    border: 1px solid rgb(0, 0, 0);
+    font-size: 16px;
 }
 
-.new-project-btn:hover {
-    border-color: white;
+.new-project-btn:hover,
+.add-todo-btn:hover {
+    background-color: var(--sidebar-btn-bg-hover-color);
+}
+
+.projects {
+    margin-top: 12px;
+    padding-top: 12px;
+    display: flex;
+    flex-direction: column;
+    /* gap: 10px; */
+    /* overflow-y: auto; */
 }
 
 .project {
@@ -102,23 +109,47 @@ header {
 .highlight-project {
     border-left-color: white;
     border-right-color: white;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: var(--highlight-project-bg-color);
 }
 
 .project-name {
+    font-size: 20px;
+    font-weight: 600;
     flex-grow: 1;
     border: none;
     border-radius: 3px;
     background-color: rgba(179, 174, 174, 0);
     margin-left: 40px;
-    padding: 7px 10px;
+    padding: 0 10px;
 }
 
-.create-todo-btn-default {
-    margin-right: 50px;
+.projects button {
+    border: none;
+    border-radius: 3px;
+    padding: 3.5px 4px;
+    border: 1px solid var(--sidebar-btn-border-color);
+    background-color: var(--sidebar-btn-bg-color);
 }
 
-.create-todo-btn {
+.projects button:hover {
+    background-color: var(--sidebar-btn-bg-hover-color);
+}
+
+.projects .delete-project-btn {
+    border-radius: 3px;
+    padding: 4px 5px;
+    margin-right: 10px;
+}
+
+.projects .delete-project-btn:hover {
+    background-color: rgba(255, 0, 0, 0.701);
+}
+
+.edit-project-btn-default {
+    margin-right: 55px;
+}
+
+.edit-project-btn {
     margin-right: 15px;
 }
 
@@ -129,12 +160,154 @@ dialog {
     width: 400px;
 }
 
+.dialog-form {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 40px;
+    background-color: #283739;
+    color: var(--dialog-form-color);
+    border: 4px solid rgba(255, 255, 255, 0.37);
+}
+
+dialog header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.close-dialog-btn {
+    padding: 2px;
+    color: grey;
+    background-color: #283739;
+    font-size: 36px;
+    border: none;
+}
+
+.close-dialog-btn:hover {
+    cursor: pointer;
+    color: white;
+}
+
+.form-list li{
+    list-style: none;
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-list li label{
+    font-size: 18px;
+    font-weight: 500;
+}
+
+input,
+textarea {
+    margin-top: 5px;
+    padding-left: 5px;
+    font-size: 14px;
+    height: 40px;
+    border: 0.17em solid #b3b3b3;
+    border-radius: 0.3em;
+    outline: none;
+    background-color: var(--input-bg-color);
+    color: var(--input-color);
+}
+
+textarea {
+    height: 100px;
+}
+
+input:hover,
+textarea:hover {
+    /* border: 0.19em solid rgb(138, 138, 250); */
+    border: 0.17em solid #21bbbe;
+}
+
+input:focus,
+textarea:focus {
+    border: 0.2em solid rgb(138, 138, 250);
+    
+}
+
+select {
+    /* Reset Select */
+    appearance: none;
+    outline: 10px red;
+    border: 0;
+
+    box-shadow: none;
+    /* Personalize */
+    flex: 1;
+    padding: 0 1em;
+    color: #fff;
+    background-color: var(--darkgray);
+    background-color: var(--input-bg-color);
+    background-image: none;
+    cursor: pointer;
+    border: 0.17em solid rgb(0, 0, 0, 0);
+}
+
+select:hover {
+    border: 0.17em solid #21bbbe;
+}
+
+/* Remove IE arrow */
+select::-ms-expand {
+    display: none;
+}
+
+/* Custom Select wrapper */
+.select-wrapper {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 2.9em;
+    border-radius: .3em;
+    overflow: hidden;
+}
+
+/* Arrow */
+.select-wrapper::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1em;
+    background-color: var(--select-wrapper-bg-color);
+    background-color: #061b1d;
+    transition: .25s all ease;
+    pointer-events: none;
+}
+
+/* Transition */
+.select-wrapper:hover::after {
+    color: #0b7f81;
+}
+
+.dialog-form .confirm-dialog-btn {
+    width: fit-content;
+    padding: 5px 20px;
+    margin: 0 auto;
+    border: 2px solid black;
+    border-radius: 4px;
+    background-color: rgb(54, 54, 54);
+    background-color: #277753;
+    color: #081c15;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.dialog-form .confirm-dialog-btn:hover {
+    cursor: pointer;
+    background-color: #4ba37c;
+}
+
 .main-content {
     grid-area: main-content;
     overflow-y: auto; /* adds a scrollbar if content overflows */
     border-left: 3px solid white; 
     border-top: 3px solid white;
-    background-color: #283739;
+    background-color: #253137;
 }
 
 .todo-column-names {
@@ -150,7 +323,7 @@ dialog {
 }
 
 .todo-column-names .col-desc {
-    margin-left: 240px;
+    margin-left: 220px;
 }
 
 .todo-column-names .col-due-date {
@@ -163,7 +336,8 @@ dialog {
 }
 
 .todos-content {
-    color: var(--todo-content-color);
+    /* color: var(--todo-content-color); */
+    color: red;
     padding: 20px 30px;
 }
 
@@ -201,9 +375,10 @@ dialog {
     background-color: white;
     border-radius: 4px;
     color: black;
-    position: fixed;
+    position: absolute;
     z-index: 1;
-    left: 960px;
+    top: 20px;
+    left: 420px;
     padding: 20px;
 }
 
@@ -218,19 +393,31 @@ dialog {
 }
 
 .edit-todo-btn {
-    height: 28px;
-    border: none;
-    border-radius: 3px;
+    height: 30px;
+    border: 1px solid grey;
+    border-radius: 4px;
     padding: 4px 5px;
     margin-left: 20px;
+    background-color: rgb(0, 0, 0, 0);
+    background-color: #58a7a8;
+
 }
 
 .delete-todo-btn {
     height: 30px;
-    border: none;
+    border: 1px solid grey;
     border-radius: 3px;
     padding: 4px 5px;
     margin-left: 20px;
+    background-color: rgb(0, 0, 0, 0);
+}
+
+.edit-todo-btn:hover {
+    background-color: #20d3d6;
+}
+
+.delete-todo-btn:hover {
+    background-color: rgb(178, 32, 32);
 }
 
 input[type="checkbox"] {
@@ -243,6 +430,10 @@ input[type="checkbox"] {
     border-radius: 0.3em;
 }
 
+input[type="checkbox"]:hover {
+    cursor: pointer;
+}
+
 input[type="checkbox"]::after {
     position: absolute;
     left: 3px;
@@ -250,7 +441,8 @@ input[type="checkbox"]::after {
     width: 12px;
     height: 12px;
     content: "";
-    box-shadow: inset 1em 1em rgb(19, 159, 19);
+    /* box-shadow: inset 1em 1em rgb(19, 159, 19); */
+    box-shadow: inset 1em 1em rgb(53, 255, 53);
     transform: scale(0);
     transition: 100ms transform ease-in-out;
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);  

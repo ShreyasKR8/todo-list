@@ -4,17 +4,25 @@ import Todo from "./components/todo";
 import display from './components/display';
 import storage from './components/storage'
 import state from './components/state'
-import { format, isPast } from 'date-fns'
+import { format, isBefore } from 'date-fns'
 
+let defaultProject = null;
+
+const createTodoBtn = document.querySelector(".add-todo-btn");
 const createTodoDialog = document.querySelector(".create-todo-dialog");
 const createTodoForm = document.querySelector(".create-todo-form");
-const confirmDialogBtn = document.querySelector(".confirm-dialog-btn");
-const closeDialogBtn = document.querySelector(".close-dialog-btn");
+const confirmDialogBtn = document.querySelector(".confirm-add-dialog-btn");
+const closeDialogBtn = document.querySelector(".close-create-dialog-btn");
 
 const editTodoDialog = document.querySelector(".edit-todo-dialog");
 const editTodoForm = document.querySelector(".edit-todo-form");
 // const confirmEditsBtn = document.querySelector(".confirm-changes-btn");
 const closeEditsDialogBtn = document.querySelector(".close-edit-dialog-btn");
+
+// const editProjectDialog = document.querySelector(".edit-project-dialog");
+// const editProjectForm = document.querySelector(".edit-project-form");
+// const confirmEditProjectBtn = document.querySelector(".confirm-edit-project-btn");
+// const closeEditProjectDialogBtn = document.querySelector(".close-edit-project-dialog-btn");
 
 const newProjectBtn = document.querySelector(".new-project-btn");
 const createProjectDialog = document.querySelector(".create-project-dialog");
@@ -34,26 +42,28 @@ function loadProjects() {
     }
 
     //add retreived projects to sidebar
+    
     display.addDefaultProject(projectNames[0]);
     projectNames.slice(1).forEach(projectName => {
         display.addNewProject(projectName);
     });
 
     //display default project's todos.
-    const defaultProject = storage.loadProjectFromLocalStorage(projectNames[0]);
+    defaultProject = storage.loadProjectFromLocalStorage(projectNames[0]);
     state.setCurrentProject(defaultProject);
     display.displayProject(defaultProject);
+    display.highlightDefaultProject();
 }
 
 function createDefaultProject() {
-    const defaultProject = new Project("default project");
-    //Correct the date please.
-    const todoItem1 = new Todo("Go Running", "hyhyhyy", "23/12", "HP");
+    defaultProject = new Project("Default project");
+    const todoItem1 = new Todo("Go Running", "Run!", "29-08-2024", "HP");
     defaultProject.addTodo(todoItem1);
     display.addDefaultProject(defaultProject.name);
     storage.saveProjectToLocalStorage(defaultProject);
     state.setCurrentProject(defaultProject);
     display.displayProject(defaultProject);
+    display.highlightDefaultProject();
 }
 
 function createProject(projectName) {
@@ -85,7 +95,12 @@ function isInputValid(titleInput, dueDateInput) {
         return false;
     }
     
-    if(isPast(new Date(dueDateInput.value))) {
+    //date, you nightmare!!
+    const dateObj = new Date();
+    const currentDay = ("0" + dateObj.getDate()).slice(-2);
+    const currentMonth = ("0" + (dateObj.getMonth() + 1)).slice(-2);
+    const currentDate = dateObj.getFullYear() + "-" + currentMonth  + "-" + currentDay;
+    if(isBefore(dueDateInput.value, currentDate)) {
         dueDateInput.setCustomValidity("Please select a valid date");
         dueDateInput.reportValidity();
         return false;
@@ -105,6 +120,55 @@ function parseInputs(titleInput, descInput, dueDateInput, priorityInput) {
     const priority = priorityInput.value;
     return {title, desc, dueDate, priority};
 }
+
+function updateTodo(todoToUpdate) {
+    const titleInput = document.getElementById("edit-title");
+    const dueDateInput = document.getElementById("edit-due-date");
+    const descInput = document.getElementById("edit-desc");
+    const priorityInput = document.getElementById("edit-priority");
+    const inputs = parseInputs(titleInput, descInput, dueDateInput, priorityInput);
+    if(!inputs) { //check if inputs are valid
+        return;
+    }
+
+    const currentProject = state.getCurrentProject();
+    const todoInProject =  currentProject.getTodo(todoToUpdate);
+    todoInProject.updateTodo(inputs.title, inputs.desc, inputs.dueDate, inputs.priority);
+    display.displayTodos(currentProject.getAllTodos());//maybe make a function called addTodoToDisplay
+    
+    editTodoForm.reset();
+    // editTodoDialog.close();
+}
+
+function isProjectNameValid(projectNameInput) {
+    if(projectNameInput.value == "") {
+        projectNameInput.setCustomValidity("Please fill the project name");
+        projectNameInput.reportValidity();
+        return false;
+    }
+    
+    const existingProjectNames = storage.getAllProjectNames();
+    if(existingProjectNames.includes(projectNameInput.value)) {
+        projectNameInput.setCustomValidity("Project already exists!");
+        projectNameInput.reportValidity();
+        return false;
+    }
+    
+    return true;
+}
+
+// function updateProjectDetails(projectNewName) {
+//     display.updateProjectDetails(projectNewName);
+    
+//     const currentproject = state.getCurrentProject();
+//     const projectOldName = currentproject.name;
+//     currentproject.updateProject(projectNewName);
+    
+//     //save project to new key and delete old item from localStorage.
+//     storage.saveProjectToLocalStorage(currentproject);
+//     storage.deleteProjectFromLocalStorage(projectOldName);
+    
+// }
 
 confirmDialogBtn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -129,25 +193,9 @@ closeDialogBtn.addEventListener("click", () => {
     createTodoDialog.close();
 });
 
-function updateTodo(todoToUpdate) {
-    const titleInput = document.getElementById("edit-title");
-    const dueDateInput = document.getElementById("edit-due-date");
-    const descInput = document.getElementById("edit-desc");
-    const priorityInput = document.getElementById("edit-priority");
-    const inputs = parseInputs(titleInput, descInput, dueDateInput, priorityInput);
-    if(!inputs) { //check if inputs are valid
-        return;
-    }
-
-    //make a function
-    const currentProject = state.getCurrentProject();
-    const todoInProject =  currentProject.getTodo(todoToUpdate);
-    todoInProject.updateTodo(inputs.title, inputs.desc, inputs.dueDate, inputs.priority);
-    display.displayTodos(currentProject.getAllTodos());//maybe make a function called addTodoToDisplay
-
-    editTodoForm.reset();
-    // editTodoDialog.close();
-}
+createTodoBtn.addEventListener("click", () => {
+    createTodoDialog.showModal();
+})
 
 closeEditsDialogBtn.addEventListener("click", () => {
     editTodoDialog.close();
@@ -162,16 +210,19 @@ closeProjectDialogBtn.addEventListener("click", () => {
     createProjectDialog.close();
 });
 
+const projectNameInput = document.getElementById("project-name");
+projectNameInput.addEventListener("click", () => {
+    projectNameInput.setCustomValidity("");
+})
+
 confirmProjectDialogBtn.addEventListener("click", (event) => {
     event.preventDefault();
 
     const projectNameInput = document.getElementById("project-name");
     
-    //check if valid
-    if(projectNameInput.value == "") {
-        projectNameInput.setCustomValidity("Please fill the project name");
-        projectNameInput.reportValidity();
+    if(!isProjectNameValid(projectNameInput)) {
         return;
+
     }
 
     createProject(projectNameInput.value);
@@ -179,6 +230,27 @@ confirmProjectDialogBtn.addEventListener("click", (event) => {
     createProjectForm.reset();
     createProjectDialog.close();
 })
+
+// confirmEditProjectBtn.addEventListener("click", (event) => {
+//     event.preventDefault();
+
+//     const projectNameInput = document.getElementById("edit-project-name");
+    
+//     if(!isProjectNameValid(projectNameInput)) {
+//         return;
+
+//     }
+
+//     updateProjectDetails(projectNameInput.value);
+
+//     editProjectForm.reset();
+//     editProjectDialog.close();
+// });
+
+// closeEditProjectDialogBtn.addEventListener("click", () => {
+//     editProjectForm.reset();
+//     editProjectDialog.close();
+// });
 
 document.addEventListener("deleteTodo", (event) => {
     const todoToDelete = event.detail;
@@ -200,3 +272,11 @@ document.addEventListener("checkboxChanged", (event) => {
     storage.saveProjectToLocalStorage(state.getCurrentProject());
 });
 
+document.addEventListener("projectDeleted", () => {
+    if(!defaultProject) {
+        return;
+    }
+    state.setCurrentProject(defaultProject);
+    display.displayProject(defaultProject);
+    display.highlightDefaultProject();
+})

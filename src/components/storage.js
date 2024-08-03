@@ -29,6 +29,9 @@ function loadProjectFromLocalStorage(projectName) {
 function deleteProjectFromLocalStorage(projectName) {
     localStorage.removeItem(projectName);
 }
+function updateProjectToLocalStorage(projectName, projectNewName) {
+    saveProjectToLocalStorage(project)
+}
 
 function getAllProjectNames() {
     return Object.keys(localStorage);
@@ -38,5 +41,6 @@ export default {
     saveProjectToLocalStorage,
     loadProjectFromLocalStorage,
     deleteProjectFromLocalStorage,
+    updateProjectToLocalStorage,
     getAllProjectNames,
 };
