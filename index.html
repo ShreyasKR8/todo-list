@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+<script defer src="bundle.js"></script></head>
+<body>
+    <dialog class="create-project-dialog">
+        <form class="create-project-form dialog-form">
+            <header>
+                <h2>New Project</h2>
+                <button class="close-project-dialog-btn close-dialog-btn" value="cancel" formmethod="dialog">&times;</button>
+            </header>
+            <ul class="project-form-list form-list">
+                <li>
+                    <label for="project-name"></label>
+                    <input type="text" id="project-name" placeholder="Project Name">
+                </li>
+            </ul>
+            <button class="create-project-dialog-btn confirm-dialog-btn" value="default">Create Project</button>
+        </form>
+    </dialog>
+    <!-- <dialog class="edit-project-dialog">
+        <form class="edit-project-form dialog-form">
+            <header>
+                <h2>Edit Project</h2>
+                <button class="close-edit-project-dialog-btn close-dialog-btn" value="cancel" formmethod="dialog">&times;</button>
+            </header>
+            <ul class="project-edit-form-list form-list">
+                <li>
+                    <label for="edit-project-name"></label>
+                    <input type="text" id="edit-project-name" placeholder="Project Name">
+                </li>
+            </ul>
+            <button class="confirm-edit-project-btn confirm-dialog-btn" value="default">Confirm changes</button>
+        </form>
+    </dialog> -->
+    <dialog class="create-todo-dialog"> 
+        <form class="create-todo-form dialog-form">
+            <header>
+                <h2>New Todo</h2>
+                <button class="close-create-dialog-btn close-dialog-btn" value="cancel" formmethod="dialog">&times;</button>
+            </header>
+            <ul class="todo-form-list form-list">
+                <li>
+                    <label for="title">Title</label>
+                    <input type="text" id="title" placeholder="Title"  value="Study WebDev" required>
+                </li>
+                <li>
+                    <label for="desc">Description</label>
+                    <textarea id="desc" placeholder="Description"></textarea>
+                </li>
+                <li>
+                    <label for="due-date">Due Date</label>
+                    <input type="date" id="due-date">
+                </li>
+                <li>
+                    <label for="priority">Priority</label>
+                    <div class="select-wrapper">
+                        <select id="priority">
+                            <option value="High">High</option>
+                            <option value="Normal" selected>Normal</option>
+                            <option value="Low">Low</option>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+            <button class="confirm-add-dialog-btn confirm-dialog-btn" value="default">Add Todo</button>
+        </form>
+    </dialog>
+    <dialog class="edit-todo-dialog">
+        <form class="edit-todo-form dialog-form">
+            <header>
+                <h2>Edit Todo</h2>
+                <button class="close-edit-dialog-btn close-dialog-btn" value="cancel" formmethod="dialog">&times;</button>
+            </header>
+            <ul class="todo-form-list form-list">
+                <li>
+                    <label for="edit-title">Title</label>
+                    <input type="text" id="edit-title" placeholder="Title" required>
+                </li>
+                <li>
+                    <label for="edit-desc">Description</label>
+                    <textarea id="edit-desc" placeholder="Description"></textarea>
+                </li>
+                <li>
+                    <label for="edit-due-date">Due Date</label>
+                    <input type="date" id="edit-due-date">
+                </li>
+                <li>
+                    <label for="edit-priority">Priority</label>
+                    <select id="edit-priority">
+                        <option value="High">High</option>
+                        <option value="Normal" selected>Normal</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </li>
+            </ul>
+            <button class="confirm-changes-btn confirm-dialog-btn" value="default">Confirm Changes</button>
+        </form>
+    </dialog>
+    <div class="container">
+        <header>
+            <div class="header-title">
+                <h1>Taskify</h1>
+                <p>Your Todo List</p>
+            </div>
+        </header>
+        <aside class="sidebar">
+            <div class="sidebar-title">
+                <h2>Projects</h2>
+            </div>
+            <button class="new-project-btn" title="Create new project">New Project</button>
+            <button class="add-todo-btn" title="Add Todo to current project">Add Todo</button>
+            <div class="projects">
+
+            </div>
+        </aside>
+        <section class="main-content">
+            <section class="todo-column-names">
+                <p class="col-title">Title</p>
+                <p class="col-desc">Description</p>
+                <p class="col-due-date">Due date</p>
+                <p class="col-priority">Priority</p>
+            </section>
+            <section class="todos-content">
+            
+            </section>
+        </section>
+    </div>
+</body>
+</html>
