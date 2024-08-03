@@ -2,7 +2,7 @@ import Project from "./project";
 import Todo from "./todo";
 
 function saveProjectToLocalStorage(project) {
-    localStorage.setItem(project.name, JSON.stringify(project)) //set the stringified object to its name key
+    localStorage.setItem(project.name, JSON.stringify(project)); //set the stringified object to its name key
 }
 
 function loadProjectFromLocalStorage(projectName) {

@@ -22,7 +22,7 @@ const closeEditsDialogBtn = document.querySelector(".close-edit-dialog-btn");
 // const editProjectDialog = document.querySelector(".edit-project-dialog");
 // const editProjectForm = document.querySelector(".edit-project-form");
 // const confirmEditProjectBtn = document.querySelector(".confirm-edit-project-btn");
-// const closeEditProjectDialogBtn = document.querySelector(".close-edit-project-dialog-btn");
+// const closeEditProjectDialogBtn = document.querySelector(".close-edit-project-dialog-btn"); 
 
 const newProjectBtn = document.querySelector(".new-project-btn");
 const createProjectDialog = document.querySelector(".create-project-dialog");
