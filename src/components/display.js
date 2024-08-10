@@ -5,11 +5,11 @@ const todosContentDiv = document.querySelector(".todos-content");
 const projectsDiv = document.querySelector(".projects");
 const confirmEditsBtn = document.querySelector(".confirm-changes-btn");
 const editTodoDialog = document.querySelector(".edit-todo-dialog");
-const editProjectDialog = document.querySelector(".edit-project-dialog");
+// const editProjectDialog = document.querySelector(".edit-project-dialog");
 let selectedProjectDiv = null;
 let currentDescDisplayed = null;
 let checkboxNum = 1;
-let projectDivList = [];
+const projectDivList = [];
 let todoToEdit = [];
 const DELETE_TODO_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="19" height="22" viewBox="0 0 24 24">
     <title>Delete Todo</title>
@@ -24,11 +24,11 @@ const EDIT_ICON_SVG = `<svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" w
     <path d="M 18.414062 2 C 18.158188 2 17.902031 2.0974687 17.707031 2.2929688 L 16 4 L 20 8 L 21.707031 6.2929688 C 22.098031 5.9019687 22.098031 5.2689063 21.707031 4.8789062 L 19.121094 2.2929688 C 18.925594 2.0974687 18.669937 2 18.414062 2 z M 14.5 5.5 L 3 17 L 3 21 L 7 21 L 18.5 9.5 L 14.5 5.5 z" fill="white"></path>
     </svg>`;
     
-function addEventListenersForBtn(btnEle) {
-    btnEle.addEventListener("click", () => {
-        editProjectDialog.showModal();
-    })
-}
+// function addEventListenersForBtn(btnEle) {
+//     btnEle.addEventListener("click", () => {
+//         editProjectDialog.showModal();
+//     })
+// }
 
 function addDefaultProject(projectName) {
     todosContentDiv.replaceChildren();
@@ -37,7 +37,7 @@ function addDefaultProject(projectName) {
     projectDiv.className = "project default-project";
     projectsDiv.appendChild(projectDiv);
     projectDiv.addEventListener("click", () => {
-        let loadedProject = storage.loadProjectFromLocalStorage(projectName);
+        const loadedProject = storage.loadProjectFromLocalStorage(projectName);
         if(!loadedProject) {
             return;
         }
@@ -61,7 +61,7 @@ function addNewProject(projectName) {
     projectDiv.className = "project";
     projectsDiv.appendChild(projectDiv);
     projectDiv.addEventListener("click", () => {
-        let loadedProject = storage.loadProjectFromLocalStorage(projectName);
+        const loadedProject = storage.loadProjectFromLocalStorage(projectName);
         if(!loadedProject) {
             return;
         }
@@ -108,7 +108,7 @@ function highlightDefaultProject() {
 
 function highlightProject(projectDiv) {
     if(selectedProjectDiv) {
-        selectedProjectDiv.classList.remove("highlight-project")
+        selectedProjectDiv.classList.remove("highlight-project");
     }
     projectDiv.classList.add("highlight-project");
     selectedProjectDiv = projectDiv;
@@ -131,7 +131,7 @@ function displayTodos(todos) {
         todoCheckbox.checked = todo.isCompleted;
         todoCheckbox.addEventListener("change", () => {
             handleTodoCheckboxChange(todo, todoCard, todoCheckbox.checked);
-        })
+        });
 
         const todoTitle = document.createElement("h3");
         todoTitle.className = "title";
@@ -146,7 +146,7 @@ function displayTodos(todos) {
 
         todoDesc.addEventListener("mouseout", () => {
             hideTodoDescription(todoCard, currentDescDisplayed);
-        })
+        });
         
         const todoDueDate = document.createElement("p");
         todoDueDate.className = "due-date";
@@ -164,14 +164,14 @@ function displayTodos(todos) {
             todoToEdit = todo;
             editTodoDialog.showModal();
             fillEditForm(todo);
-        })
+        });
         
         const deleteTodoBtn = document.createElement("button");
         deleteTodoBtn.className = "delete-todo-btn";
         deleteTodoBtn.innerHTML = DELETE_TODO_ICON_SVG;
         deleteTodoBtn.addEventListener("click", () => {
             deleteTodo(todoCard, todo);
-        })
+        });
         
         todoCard.appendChild(todoCheckbox);
         todoCard.appendChild(todoTitle);
@@ -254,7 +254,7 @@ function setTodoStyles(todoCard, isTodoChecked) {
             let contentColor = getComputedStyle(document.documentElement).getPropertyValue('--todo-content-color');
             childEle.style.color = contentColor;
         }
-    })
+    });
 }
 
 function sendCheckboxClicked(todoToUpdate, isTodoChecked) {

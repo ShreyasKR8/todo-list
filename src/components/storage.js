@@ -43,7 +43,6 @@ function deleteProjectFromLocalStorage(projectName) {
 }
 
 function getAllProjectNames() {
-    // return Object.keys(localStorage);
     return JSON.parse(localStorage.getItem(PROJECT_ORDER_KEY)) || [];
 }
 

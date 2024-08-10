@@ -1,10 +1,10 @@
-import './style.css'
-import Project from './components/project'
+import './style.css';
+import Project from './components/project';
 import Todo from "./components/todo";
 import display from './components/display';
-import storage from './components/storage'
-import state from './components/state'
-import { format, isBefore } from 'date-fns'
+import storage from './components/storage';
+import state from './components/state';
+import { format, isBefore } from 'date-fns';
 
 let defaultProject = null;
 
@@ -57,7 +57,7 @@ function loadProjects() {
 
 function createDefaultProject() {
     defaultProject = new Project("Default project");
-    const todoItem1 = new Todo("Go Running", "Run!", "29-08-2024", "HP");
+    const todoItem1 = new Todo("Go Running", "Run!", "29-08-2024", "High");
     defaultProject.addTodo(todoItem1);
     display.addDefaultProject(defaultProject.name);
     storage.saveProjectToLocalStorage(defaultProject);
@@ -195,7 +195,7 @@ closeDialogBtn.addEventListener("click", () => {
 
 createTodoBtn.addEventListener("click", () => {
     createTodoDialog.showModal();
-})
+});
 
 closeEditsDialogBtn.addEventListener("click", () => {
     editTodoDialog.close();
@@ -213,7 +213,7 @@ closeProjectDialogBtn.addEventListener("click", () => {
 const projectNameInput = document.getElementById("project-name");
 projectNameInput.addEventListener("click", () => {
     projectNameInput.setCustomValidity("");
-})
+});
 
 confirmProjectDialogBtn.addEventListener("click", (event) => {
     event.preventDefault();
@@ -229,7 +229,7 @@ confirmProjectDialogBtn.addEventListener("click", (event) => {
 
     createProjectForm.reset();
     createProjectDialog.close();
-})
+});
 
 // confirmEditProjectBtn.addEventListener("click", (event) => {
 //     event.preventDefault();
@@ -264,7 +264,7 @@ document.addEventListener("updateTodo", (event) => {
     updateTodo(todoToUpdate);
     // todoToUpdate.setStatus(isTodoChecked);
     storage.saveProjectToLocalStorage(state.getCurrentProject());
-})
+});
 
 document.addEventListener("checkboxChanged", (event) => {
     const { todoToUpdate, isTodoChecked } = event.detail;
@@ -279,4 +279,4 @@ document.addEventListener("projectDeleted", () => {
     state.setCurrentProject(defaultProject);
     display.displayProject(defaultProject);
     display.highlightDefaultProject();
-})
+});
